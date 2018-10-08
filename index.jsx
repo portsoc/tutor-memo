@@ -137,57 +137,53 @@
   class Card extends React.Component {
     constructor(props) {
       super(props);
-      this.state = { flipped: false };
+      this.state = {
+        flipped: false,
+        buttons: false,
+      };
 
       this.setFlipped = this.setFlipped.bind(this);
     }
 
-    setFlipped(flipped) {
-      this.setState({ flipped });
+    setFlipped(flipped, buttons) {
+      this.setState({ flipped, buttons });
     }
 
     render() {
       const card = this.props.card;
       const flipped = this.state.flipped;
+      const showButtons = this.state.buttons;
       const showImage = flipped ? card.reversed : !card.reversed;
       const show = (showImage
         ? <img src={card.img} alt="card photo" /> // eslint-disable-line jsx-a11y/img-redundant-alt
         : <p>{card.name}</p>
       );
 
-      let buttons;
-      if (!flipped) {
-        buttons = (
-          <button
-            type="button"
-            onClick={() => this.setFlipped(true)}
-            className="flip"
-          >
-            Flip
-          </button>
-        );
-      } else {
-        buttons = this.props.levels.map((l) => (
-          <button
-            key={l.name}
-            type="button"
-            onClick={() => { this.setFlipped(false); this.props.setResult(card, l.name); }}
-          >
-            {l.name}
-          </button>
-        ));
-
-        buttons.push(
-          <button
-            type="button"
-            key="_flip"
-            onClick={() => this.setFlipped(false)}
-            className="flip"
-          >
-            Flip back
-          </button>
-        );
+      const buttons = [];
+      if (showButtons) {
+        for (const l of this.props.levels) {
+          buttons.push(
+            <button
+              key={l.name}
+              type="button"
+              onClick={() => { this.setFlipped(false, false); this.props.setResult(card, l.name); }}
+            >
+              {l.name}
+            </button>
+          );
+        }
       }
+
+      buttons.push(
+        <button
+          type="button"
+          key="_flip"
+          onClick={() => this.setFlipped(!flipped, true)}
+          className="flip"
+        >
+          Flip
+        </button>
+      );
 
       return (
         <section className="card">
