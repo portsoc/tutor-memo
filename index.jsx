@@ -20,20 +20,9 @@
     constructor(props) {
       super(props);
       if (localStorage.TutorMemo) {
-        console.log('load');
         this.state = JSON.parse(localStorage.TutorMemo);
       } else {
-        console.log('new');
-        this.state = {
-          cards: [{
-            id: 0,
-            img: 'none',
-            name: 'jo doe',
-            reversed: false, // by default shows image first; reversed shows name first
-            // seeNext defaults to 0
-            // lastDuration defaults to 1, which is also its minimum
-          }],
-        };
+        this.state = {};
       }
 
       if (!this.state.cards) this.state.cards = [];
