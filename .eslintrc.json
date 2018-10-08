@@ -25,7 +25,8 @@
     "react/prop-types": "off",
     "prefer-destructuring": "off",
     "no-restricted-syntax": "off",
-    "no-use-before-define": "off"
+    "no-use-before-define": "off",
+    "jsx-a11y/no-autofocus": "off"
   },
   "globals": {
     "React": true,

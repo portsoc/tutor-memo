@@ -80,8 +80,14 @@
     }
 
     render() {
+      const heading = <h1>Tutor-Memo</h1>;
       if (!this.state.cards || this.state.cards.length === 0) {
-        return <p>No cards to remember, use addTutorMemoCards...() functions</p>;
+        return (
+          <Fragment>
+            {heading}
+            <p>No cards to remember, use addTutorMemoCards...() functions</p>
+          </Fragment>
+        );
       }
 
       const now = Date.now();
@@ -105,10 +111,13 @@
       const next = today[Math.floor(Math.random() * today.length)];
       return (
         <Fragment>
-          <section className="stats">
-            { cardCount }
-            <p>{`Today: ${today.length}`}</p>
-          </section>
+          <header>
+            {heading}
+            <section className="stats">
+              { cardCount }
+              <p>{`Today: ${today.length}`}</p>
+            </section>
+          </header>
           <Card card={next} levels={this.props.levels} setResult={this.setCardResult} />
         </Fragment>
       );
@@ -137,30 +146,29 @@
   class Card extends React.Component {
     constructor(props) {
       super(props);
-      this.state = {
-        flipped: false,
-        buttons: false,
-      };
+      this.state = { flipped: false };
 
       this.setFlipped = this.setFlipped.bind(this);
     }
 
-    setFlipped(flipped, buttons) {
-      this.setState({ flipped, buttons });
+    setFlipped(flipped) {
+      this.setState({ flipped });
     }
 
     render() {
       const card = this.props.card;
       const flipped = this.state.flipped;
-      const showButtons = this.state.buttons;
-      const showImage = flipped ? card.reversed : !card.reversed;
-      const show = (showImage
-        ? <img src={card.img} alt="card photo" /> // eslint-disable-line jsx-a11y/img-redundant-alt
-        : <p>{card.name}</p>
+      const showImage = flipped || card.reversed;
+      const showName = flipped || !card.reversed;
+      const show = (
+        <Fragment>
+          {showImage && <img src={card.img} alt="card face" />}
+          {showName && <p>{card.name}</p>}
+        </Fragment>
       );
 
       const buttons = [];
-      if (showButtons) {
+      if (flipped) {
         for (const l of this.props.levels) {
           buttons.push(
             <button
@@ -172,18 +180,19 @@
             </button>
           );
         }
+      } else {
+        buttons.push(
+          <button
+            type="button"
+            key="_flip"
+            autoFocus
+            onClick={() => this.setFlipped(!flipped, true)}
+            className="flip"
+          >
+            Flip
+          </button>
+        );
       }
-
-      buttons.push(
-        <button
-          type="button"
-          key="_flip"
-          onClick={() => this.setFlipped(!flipped, true)}
-          className="flip"
-        >
-          Flip
-        </button>
-      );
 
       return (
         <section className="card">
@@ -205,7 +214,7 @@
       id,
       name,
       img,
-      reversed,
+      reversed, // a reversed card shows image first
     });
   }
 
