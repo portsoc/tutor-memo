@@ -20,8 +20,10 @@
     constructor(props) {
       super(props);
       if (localStorage.TutorMemo) {
+        console.log('load');
         this.state = JSON.parse(localStorage.TutorMemo);
       } else {
+        console.log('new');
         this.state = {
           cards: [{
             id: 0,
@@ -33,6 +35,8 @@
           }],
         };
       }
+
+      if (!this.state.cards) this.state.cards = [];
 
       this.fastForward = this.fastForward.bind(this);
       this.setCardResult = this.setCardResult.bind(this);
@@ -99,7 +103,7 @@
       if (today.length === 0) {
         const next = TutorMemo.findNext(this.state.cards);
         return (
-          <section>
+          <section className="stats">
             { cardCount }
             <p>
               {`Next in ${Math.ceil(((next.seeNext || 0) - now) / DAY)} day(s)`}
@@ -112,7 +116,7 @@
       const next = today[Math.floor(Math.random() * today.length)];
       return (
         <Fragment>
-          <section>
+          <section className="stats">
             { cardCount }
             <p>{`Today: ${today.length}`}</p>
           </section>
@@ -177,6 +181,16 @@
             {l.name}
           </button>
         ));
+
+        buttons.push(
+          <button
+            type="button"
+            onClick={() => this.setState({ flipped: false })}
+            className="flip"
+          >
+            Flip back
+          </button>
+        );
       }
 
       return (
@@ -190,10 +204,39 @@
     }
   }
 
+  // add a card to an array of cards, if it's not already there
+  function addCard(cards, id, name, img, reversed) {
+    // return if the card is already there
+    if (cards.some((c) => c.id === id)) return;
+
+    cards.push({
+      id,
+      name,
+      img,
+      reversed,
+    });
+  }
+
   window.addTutorMemoCardsFromUoPTutees = (tutees) => {
-    // todo
-    ReactDOM.render(<TutorMemo />, document.querySelector('main'));
+    if (typeof tutees === 'string') tutees = JSON.parse(tutees); // eslint-disable-line no-param-reassign
+
+    const students = Array.isArray(tutees) ? tutees : tutees.students || [];
+
+    const state = JSON.parse(localStorage.TutorMemo || '{}');
+    if (!state.cards) state.cards = [];
+
+    for (const s of students) {
+      const id = s.sRef;
+      const name = `${s.forename} ${s.surname}`;
+      const img = `https://portal.webapps.port.ac.uk/staff/Image?person_id=${s.sRef}`;
+
+      addCard(state.cards, `${id}img`, name, img, false);
+      addCard(state.cards, `${id}name`, name, img, true);
+    }
+
+    tutorMemoInstance.setState(state);
   };
 
-  ReactDOM.render(<TutorMemo />, document.querySelector('main'));
+  let tutorMemoInstance;
+  ReactDOM.render(<TutorMemo ref={(x) => { tutorMemoInstance = x; }} />, document.querySelector('main'));
 })();

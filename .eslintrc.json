@@ -24,7 +24,8 @@
     "react/no-multi-comp": "off",
     "react/prop-types": "off",
     "prefer-destructuring": "off",
-    "no-restricted-syntax": "off"
+    "no-restricted-syntax": "off",
+    "no-use-before-define": "off"
   },
   "globals": {
     "React": true,
