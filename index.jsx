@@ -138,6 +138,12 @@
     constructor(props) {
       super(props);
       this.state = { flipped: false };
+
+      this.setFlipped = this.setFlipped.bind(this);
+    }
+
+    setFlipped(flipped) {
+      this.setState({ flipped });
     }
 
     render() {
@@ -154,7 +160,7 @@
         buttons = (
           <button
             type="button"
-            onClick={() => this.setState({ flipped: true })}
+            onClick={() => this.setFlipped(true)}
             className="flip"
           >
             Flip
@@ -165,7 +171,7 @@
           <button
             key={l.name}
             type="button"
-            onClick={() => this.props.setResult(card, l.name)}
+            onClick={() => { this.setFlipped(false); this.props.setResult(card, l.name); }}
           >
             {l.name}
           </button>
@@ -174,7 +180,8 @@
         buttons.push(
           <button
             type="button"
-            onClick={() => this.setState({ flipped: false })}
+            key="_flip"
+            onClick={() => this.setFlipped(false)}
             className="flip"
           >
             Flip back
