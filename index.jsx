@@ -98,13 +98,16 @@
       if (today.length === 0) {
         const next = TutorMemo.findNext(this.state.cards);
         return (
-          <section className="stats">
-            { cardCount }
-            <p>
-              {`Next in ${Math.ceil(((next.seeNext || 0) - now) / DAY)} day(s)`}
-              <button onClick={this.fastForward} type="button">Fast forward</button>
-            </p>
-          </section>
+          <header>
+            {heading}
+            <section className="stats">
+              { cardCount }
+              <p>
+                {`Next in ${Math.ceil(((next.seeNext || 0) - now) / DAY)} day(s)`}
+                <button onClick={this.fastForward} type="button">Fast forward</button>
+              </p>
+            </section>
+          </header>
         );
       }
 
