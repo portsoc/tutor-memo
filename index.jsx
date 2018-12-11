@@ -85,7 +85,10 @@
         return (
           <Fragment>
             {heading}
-            <p>No cards to remember, use addTutorMemoCards...() functions</p>
+            <section>
+              <p>No cards to remember, use addTutorMemoCards...() functions.</p>
+              <a href="https://portal-webapps.port.ac.uk/staff/myTuteesAction.do" target="_blank" rel="noopener noreferrer">Login here</a>
+            </section>
           </Fragment>
         );
       }
@@ -100,6 +103,9 @@
         return (
           <header>
             {heading}
+            <section className="login">
+              <a href="https://portal-webapps.port.ac.uk/staff/myTuteesAction.do" target="_blank" rel="noopener noreferrer">Login here</a>
+            </section>
             <section className="stats">
               { cardCount }
               <p>
@@ -116,6 +122,9 @@
         <Fragment>
           <header>
             {heading}
+            <section className="login">
+              <a href="https://portal-webapps.port.ac.uk/staff/myTuteesAction.do" target="_blank" rel="noopener noreferrer">Login here</a>
+            </section>
             <section className="stats">
               { cardCount }
               <p>{`Today: ${today.length}`}</p>
