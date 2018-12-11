@@ -221,6 +221,11 @@
     });
   }
 
+  // every student needs:
+  //   sRef: student ID - just the number, e.g. 123456
+  //   forename: string
+  //   surname: string
+
   window.addTutorMemoCardsFromUoPTutees = (tutees) => {
     if (typeof tutees === 'string') tutees = JSON.parse(tutees); // eslint-disable-line no-param-reassign
 
@@ -232,7 +237,7 @@
     for (const s of students) {
       const id = s.sRef;
       const name = `${s.forename} ${s.surname}`;
-      const img = `https://portal.webapps.port.ac.uk/staff/Image?person_id=${s.sRef}`;
+      const img = `https://portal-webapps.port.ac.uk/staff/Image?person_id=${s.sRef}`;
 
       addCard(state.cards, `${id}img`, name, img, false);
       addCard(state.cards, `${id}name`, name, img, true);
