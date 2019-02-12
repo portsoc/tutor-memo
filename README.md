@@ -13,12 +13,14 @@ https://jacek.soc.port.ac.uk/tutor-memo
 3. copy the following code in:
 
   ```
-  addTutorMemoCardsFromUoPTutees(
-  atob('"+btoa(JSON.stringify((await(await
+  `
+  addTutorMemoCardsFromUoPTutees(atob('`
+  +btoa(JSON.stringify((await(await
   fetch('https://portal-webapps.port.ac.uk/staff/api/esb/staffMember/tutees'))
   .json()).students.map(
   s=>({sRef:s.sRef,forename:s.forename,
-  surname:s.surname}))))+"'))   ";
+  surname:s.surname}))))+`'))
+  `;
   ```
 
 
