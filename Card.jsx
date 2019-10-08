@@ -26,6 +26,14 @@ class Card extends React.Component {
       </Fragment>
     );
 
+    if (!showImage) {
+      // preload the image because it may be needed on the next card
+      this.preloadImage = new Image();
+      this.preloadImage.src = card.img;
+    } else {
+      this.preloadImage = null;
+    }
+
     const buttons = [];
     if (flipped) {
       for (const l of this.props.levels) {
