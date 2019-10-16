@@ -73,6 +73,16 @@ class TutorMemo extends React.Component {
       card.lastDuration = nextDuration;
       card.seeNext = now + (nextDuration - 0.5) * DAY;
 
+      // if there's a card with the same picture which is scheduled to come up soon,
+      // move it 2h forward so we don't see the same student obverse and reverse
+      // in the same training session
+      const today = cards.filter((c) => (c.seeNext || 0) <= now);
+      for (const c of today) {
+        if (c !== card && c.img === card.img) {
+          c.seeNext = now + DAY / 12;
+        }
+      }
+
       return { cards };
     });
   }
